@@ -1,0 +1,1394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Focuzone — Mental Health & Focus App Case Study</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Epilogue:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --bg: #F5F3EF; --fg: #0D0D0D; --mid: #5A5A5A; --light: #ADADAD;
+  --rule: #E2E0DA; --white: #FFFFFF;
+  --accent: #6B4EFF; --accent2: #FF6B6B; --accent3: #2EC4B6;
+  --soft: #EDE9FF; --soft2: #FFF0F0; --soft3: #E6FAF8;
+  --dark: #0D0A1A; --dark2: #160F2E; --dark3: #1A1230;
+  --serif: 'Playfair Display', Georgia, serif;
+  --sans: 'Epilogue', system-ui, sans-serif;
+  --mono: 'JetBrains Mono', monospace;
+  --r: 14px;
+}
+html { scroll-behavior: smooth; }
+body { background: var(--bg); color: var(--fg); font-family: var(--sans); font-size: 16px; line-height: 1.6; -webkit-font-smoothing: antialiased; }
+
+/* NAV */
+nav { display: none; }
+.nav-name { font-family: var(--serif); font-size: 16px; color: var(--fg); text-decoration: none; }
+.nav-links { display: flex; gap: 28px; }
+.nav-links a { font-size: 11px; font-weight: 500; color: var(--mid); text-decoration: none; letter-spacing: 0.07em; text-transform: uppercase; transition: color 0.2s; }
+.nav-links a:hover { color: var(--accent); }
+
+/* LAYOUT */
+.wrap { max-width: 100%; margin: 0 auto; padding: 0 24px; }
+.wrap-wide { max-width: 100%; margin: 0 auto; padding: 0 24px; }
+section { padding: 64px 0; }
+section + section { border-top: 1px solid var(--rule); }
+
+/* COMMON */
+.tag { display: inline-flex; align-items: center; gap: 7px; background: var(--soft); color: var(--accent); font-size: 10px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; padding: 5px 14px; border-radius: 100px; margin-bottom: 20px; }
+.tag span { width: 5px; height: 5px; border-radius: 50%; background: var(--accent); }
+.tag.pink { background: var(--soft2); color: var(--accent2); }
+.tag.pink span { background: var(--accent2); }
+.tag.teal { background: var(--soft3); color: var(--accent3); }
+.tag.teal span { background: var(--accent3); }
+h2 { font-family: var(--serif); font-size: clamp(26px, 3.5vw, 44px); line-height: 1.1; letter-spacing: -0.02em; color: var(--fg); margin-bottom: 16px; }
+h2 em { font-style: italic; color: var(--accent); }
+.lead { font-size: 16px; color: var(--mid); line-height: 1.8; max-width: 600px; }
+.snum { font-family: var(--serif); font-size: 64px; color: var(--rule); line-height: 1; margin-bottom: -12px; display: block; }
+
+/* HERO */
+.hero { padding: 60px 0 0; background: var(--dark); overflow: hidden; position: relative; }
+.hero::before { content: ''; position: absolute; top: -100px; right: -100px; width: 500px; height: 500px; background: radial-gradient(circle, rgba(107,78,255,0.22) 0%, transparent 65%); border-radius: 50%; }
+.hero::after { content: ''; position: absolute; bottom: 80px; left: -60px; width: 360px; height: 360px; background: radial-gradient(circle, rgba(255,107,107,0.1) 0%, transparent 65%); border-radius: 50%; }
+.hero-grid { display: grid; grid-template-columns: 1fr; gap: 48px; align-items: flex-end; position: relative; z-index: 1; }
+.hero-left { padding-bottom: 72px; }
+.hero-pills { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 28px; }
+.hpill { background: rgba(107,78,255,0.14); border: 1px solid rgba(107,78,255,0.28); color: rgba(255,255,255,0.65); font-size: 10px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; padding: 4px 12px; border-radius: 100px; }
+.hpill.r { background: rgba(255,107,107,0.1); border-color: rgba(255,107,107,0.22); color: rgba(255,150,150,0.85); }
+.hpill.t { background: rgba(46,196,182,0.1); border-color: rgba(46,196,182,0.22); color: rgba(46,196,182,0.85); }
+.hero h1 { font-family: var(--serif); font-size: clamp(38px, 5vw, 62px); line-height: 1.07; letter-spacing: -0.025em; color: #fff; margin-bottom: 22px; }
+.hero h1 em { font-style: italic; color: rgba(107,78,255,0.85); }
+.hero-desc { font-size: 16px; color: rgba(255,255,255,0.45); line-height: 1.78; max-width: 460px; margin-bottom: 44px; }
+.hmeta { display: flex; gap: 36px; flex-wrap: wrap; }
+.hm { display: flex; flex-direction: column; gap: 3px; }
+.hm-l { font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.22); }
+.hm-v { font-size: 13px; font-weight: 500; color: rgba(255,255,255,0.65); }
+
+/* HERO PHONE CLUSTER */
+.hero-phones { display: none; }
+.h-phone { border-radius: 36px; padding: 11px; border: 1.5px solid rgba(107,78,255,0.25); box-shadow: 0 32px 80px rgba(0,0,0,0.55), 0 0 40px rgba(107,78,255,0.12); }
+.h-phone.main { background: #1A1028; width: 200px; }
+.h-phone.side { background: #160F2A; width: 168px; transform: translateY(40px); opacity: 0.85; }
+.h-notch { width: 44px; height: 6px; background: #0D0A1A; border-radius: 3px; margin: 0 auto 10px; }
+.h-screen { border-radius: 26px; overflow: hidden; }
+
+/* PHONE SCREENS CONTENT */
+.ps-home { background: linear-gradient(155deg,#1A1028,#0D0820); padding: 14px 12px; }
+.ps-time-sm { font-size: 9px; color: rgba(255,255,255,0.28); text-align: center; margin-bottom: 12px; letter-spacing: 0.06em; }
+.ps-greet { font-size: 14px; color: #fff; font-weight: 500; margin-bottom: 12px; }
+.ps-focus-c { background: rgba(107,78,255,0.18); border: 1px solid rgba(107,78,255,0.3); border-radius: 12px; padding: 11px; margin-bottom: 8px; }
+.ps-fc-l { font-size: 7px; text-transform: uppercase; letter-spacing: 0.1em; color: rgba(255,255,255,0.3); margin-bottom: 4px; }
+.ps-fc-t { font-size: 11px; color: #fff; margin-bottom: 7px; }
+.ps-prog { height: 3px; background: rgba(255,255,255,0.08); border-radius: 2px; }
+.ps-prog-f { height: 3px; width: 65%; background: linear-gradient(90deg,#6B4EFF,#A78BFF); border-radius: 2px; }
+.ps-moods { display: grid; grid-template-columns: repeat(4,1fr); gap: 4px; margin-bottom: 8px; }
+.ps-mood { background: rgba(255,255,255,0.04); border-radius: 7px; padding: 5px 2px; text-align: center; font-size: 12px; }
+.ps-mood.a { background: rgba(107,78,255,0.22); border: 1px solid rgba(107,78,255,0.38); }
+.ps-sess { background: rgba(255,107,107,0.09); border: 1px solid rgba(255,107,107,0.18); border-radius: 9px; padding: 9px 10px; display: flex; justify-content: space-between; align-items: center; }
+.ps-sess-t { font-size: 10px; color: #fff; }
+.ps-sess-n { font-size: 16px; color: rgba(255,107,107,0.85); font-weight: 300; }
+
+.ps-timer { background: linear-gradient(155deg,#160F2E,#0A0618); padding: 14px 12px; text-align: center; }
+.ps-timer-l { font-size: 7px; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255,255,255,0.28); margin-bottom: 14px; }
+.timer-ring { width: 100px; height: 100px; border-radius: 50%; background: conic-gradient(#6B4EFF 0% 72%, rgba(107,78,255,0.1) 72% 100%); margin: 0 auto 10px; display: flex; align-items: center; justify-content: center; position: relative; }
+.timer-inner { width: 86px; height: 86px; border-radius: 50%; background: #160F2E; display: flex; flex-direction: column; align-items: center; justify-content: center; position: absolute; }
+.timer-num { font-size: 22px; font-weight: 300; color: #fff; line-height: 1; }
+.timer-unit { font-size: 7px; color: rgba(255,255,255,0.28); letter-spacing: 0.08em; }
+.ps-timer-name { font-size: 10px; color: rgba(255,255,255,0.4); margin-bottom: 12px; }
+.ps-ctrl { display: flex; justify-content: center; gap: 10px; margin-bottom: 12px; }
+.ps-btn { width: 30px; height: 30px; border-radius: 50%; background: rgba(255,255,255,0.05); display: flex; align-items: center; justify-content: center; }
+.ps-btn.p { background: var(--accent); width: 38px; height: 38px; }
+.ps-btn svg { width: 11px; height: 11px; fill: rgba(255,255,255,0.45); }
+.ps-btn.p svg { fill: #fff; }
+.ps-tags { display: flex; justify-content: center; gap: 4px; flex-wrap: wrap; }
+.ps-t { background: rgba(107,78,255,0.13); border-radius: 100px; padding: 2px 8px; font-size: 8px; color: rgba(107,78,255,0.75); }
+
+/* ── PROBLEM ── */
+.prob-grid { display: grid; grid-template-columns: 1fr; gap: 20px; margin-top: 48px; }
+.prob-c { background: var(--white); border-radius: var(--r); padding: 26px; border: 1px solid var(--rule); border-left: 3px solid var(--accent2); }
+.prob-c h4 { font-size: 14px; font-weight: 600; color: var(--fg); margin-bottom: 6px; }
+.prob-c p { font-size: 13px; color: var(--mid); line-height: 1.65; }
+.stat-dark { background: var(--dark); border-radius: 20px; padding: 32px; margin-top: 32px; display: grid; grid-template-columns: 1fr; gap: 16px; }
+.stat-d-item { padding: 0 28px; }
+.stat-d-item + .stat-d-item { border-top: 1px solid rgba(255,255,255,0.06); padding-top: 20px; }
+.stat-d-num { font-family: var(--serif); font-size: 44px; color: #fff; line-height: 1; margin-bottom: 4px; }
+.stat-d-num span { color: var(--accent); }
+.stat-d-l { font-size: 12px; color: rgba(255,255,255,0.35); line-height: 1.5; }
+
+/* ── WIREFRAMES ── */
+.wf-section { background: var(--white); border-radius: 20px; padding: 40px; margin-top: 48px; border: 1px solid var(--rule); }
+.wf-title { font-size: 13px; font-weight: 600; color: var(--fg); margin-bottom: 6px; }
+.wf-sub { font-size: 12px; color: var(--mid); margin-bottom: 28px; }
+.wf-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; align-items: end; flex-wrap: wrap; }
+.wf-frame { display: flex; flex-direction: column; align-items: center; }
+.wf-phone { width: 88px; background: #F0EEE8; border-radius: 18px; padding: 7px; border: 1.5px solid #D8D4CC; }
+.wf-screen { background: #E8E4DC; border-radius: 12px; padding: 8px; min-height: 148px; }
+.wf-notch { width: 24px; height: 4px; background: #D0CCC4; border-radius: 2px; margin: 0 auto 8px; }
+.wf-bar { height: 6px; background: #D0CCC4; border-radius: 2px; margin-bottom: 6px; }
+.wf-bar.short { width: 55%; }
+.wf-bar.med { width: 80%; }
+.wf-bar.full { width: 100%; }
+.wf-box { background: #D8D4CC; border-radius: 6px; padding: 8px; margin-bottom: 6px; }
+.wf-box-h { height: 6px; background: #C8C4BC; border-radius: 2px; margin-bottom: 4px; width: 70%; }
+.wf-box-line { height: 4px; background: #C8C4BC; border-radius: 2px; margin-bottom: 3px; }
+.wf-box-line.s { width: 50%; }
+.wf-prog-area { height: 3px; background: #C8C4BC; border-radius: 2px; margin-bottom: 6px; }
+.wf-prog-fill { height: 3px; width: 60%; background: #A8A4A0; border-radius: 2px; }
+.wf-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; margin-bottom: 6px; }
+.wf-cell { background: #D0CCC4; border-radius: 5px; height: 24px; }
+.wf-circle { width: 48px; height: 48px; border-radius: 50%; background: #D0CCC4; margin: 0 auto 8px; border: 3px solid #C0BCC4; display: flex; align-items: center; justify-content: center; }
+.wf-circle-in { width: 36px; height: 36px; border-radius: 50%; background: #E8E4DC; }
+.wf-btn { height: 18px; background: #B8B4D0; border-radius: 6px; margin-top: 6px; }
+.wf-grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 3px; margin-bottom: 6px; }
+.wf-cell-t { background: #D0CCC4; border-radius: 5px; height: 32px; }
+.wf-label { font-size: 9px; color: var(--mid); text-align: center; margin-top: 8px; letter-spacing: 0.05em; }
+.wf-arrow { display: none; }
+
+/* ── USER FLOW ── */
+.uf-canvas { background: var(--white); border-radius: 20px; padding: 28px 20px; margin-top: 48px; border: 1px solid var(--rule); overflow: hidden; }
+.uf-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+.uf-col { display: flex; flex-direction: column; align-items: center; flex: 1; }
+.uf-col-title { font-size: 9px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--light); margin-bottom: 20px; text-align: center; padding: 4px 8px; background: var(--bg); border-radius: 100px; }
+.uf-node { font-size: 10px; font-weight: 500; color: var(--fg); background: var(--bg); border: 1.5px solid var(--rule); border-radius: 8px; padding: 8px 10px; text-align: center; width: 90px; position: relative; margin-bottom: 8px; transition: all 0.15s; cursor: default; }
+.uf-node:hover { border-color: var(--accent); color: var(--accent); }
+.uf-node.start { background: var(--accent); color: #fff; border-color: var(--accent); }
+.uf-node.end { background: var(--accent3); color: #fff; border-color: var(--accent3); }
+.uf-node.key { background: var(--soft); border-color: rgba(107,78,255,0.35); color: var(--accent); }
+.uf-node.warn { background: var(--soft2); border-color: rgba(255,107,107,0.3); color: var(--accent2); }
+.uf-node.decision { border-radius: 0; transform: rotate(45deg); width: 60px; height: 60px; display: flex; align-items: center; justify-content: center; padding: 0; margin: 4px auto; }
+.uf-node.decision span { transform: rotate(-45deg); display: block; font-size: 9px; }
+.uf-vline { width: 1px; height: 12px; background: var(--rule); margin: 0 auto; }
+.uf-hconn { width: 100%; height: 1px; background: var(--rule); position: relative; top: -44px; z-index: 0; }
+
+/* ── DESIGN SYSTEM ── */
+.ds-full { margin-top: 48px; }
+
+/* Color palette */
+.ds-palette { display: flex; gap: 8px; margin-bottom: 40px; flex-wrap: wrap; }
+.ds-swatch { display: flex; flex-direction: column; gap: 8px; flex: 1; min-width: 80px; }
+.ds-color { height: 72px; border-radius: 12px; }
+.ds-swatch-name { font-size: 11px; font-weight: 600; color: var(--fg); }
+.ds-swatch-hex { font-size: 10px; color: var(--mid); font-family: var(--mono); }
+.ds-swatch-role { font-size: 9px; color: var(--light); }
+
+/* Typography specimens */
+.ds-type-row { display: grid; grid-template-columns: 1fr; gap: 20px; margin-bottom: 40px; }
+.ds-type-card { background: var(--white); border-radius: var(--r); padding: 24px; border: 1px solid var(--rule); }
+.ds-type-label { font-size: 9px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--light); margin-bottom: 12px; }
+.ds-type-display { font-family: var(--serif); font-size: 32px; color: var(--fg); line-height: 1.1; }
+.ds-type-heading { font-size: 20px; font-weight: 600; color: var(--fg); }
+.ds-type-body { font-size: 14px; color: var(--mid); line-height: 1.7; }
+.ds-type-caption { font-size: 10px; color: var(--light); letter-spacing: 0.08em; text-transform: uppercase; }
+.ds-type-mono { font-family: var(--mono); font-size: 12px; color: var(--accent); }
+
+/* Component library */
+.ds-comp-grid { display: grid; grid-template-columns: 1fr; gap: 20px; margin-bottom: 40px; }
+.ds-comp { background: var(--white); border-radius: var(--r); padding: 24px; border: 1px solid var(--rule); }
+.ds-comp-label { font-size: 9px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--light); margin-bottom: 16px; }
+
+/* Button specimens */
+.ds-btn-row { display: flex; flex-direction: column; gap: 8px; }
+.dsb { border-radius: 10px; padding: 10px 16px; font-size: 12px; font-weight: 500; text-align: center; font-family: var(--sans); }
+.dsb.primary { background: var(--accent); color: #fff; }
+.dsb.secondary { background: var(--soft); color: var(--accent); }
+.dsb.ghost { border: 1.5px solid var(--rule); color: var(--mid); }
+.dsb.danger { background: var(--soft2); color: var(--accent2); border: 1px solid rgba(255,107,107,0.2); }
+
+/* Card specimens */
+.ds-card-demo { background: var(--bg); border-radius: 10px; padding: 12px; border: 1px solid var(--rule); margin-bottom: 8px; }
+.ds-card-demo h5 { font-size: 11px; font-weight: 600; color: var(--fg); margin-bottom: 3px; }
+.ds-card-demo p { font-size: 10px; color: var(--mid); }
+
+/* Input specimens */
+.ds-input-demo { margin-bottom: 8px; }
+.ds-input { width: 100%; padding: 9px 12px; border: 1.5px solid var(--rule); border-radius: 8px; font-size: 12px; color: var(--fg); font-family: var(--sans); background: var(--bg); outline: none; transition: border 0.2s; }
+.ds-input:focus { border-color: var(--accent); background: var(--white); }
+.ds-input-label { font-size: 10px; color: var(--mid); margin-bottom: 4px; font-weight: 500; display: block; }
+.ds-input.error { border-color: var(--accent2); }
+
+/* Icon grid */
+.ds-icon-grid { display: grid; grid-template-columns: repeat(5,1fr); gap: 8px; }
+.ds-icon { width: 40px; height: 40px; border-radius: 10px; background: var(--bg); border: 1px solid var(--rule); display: flex; align-items: center; justify-content: center; font-size: 16px; transition: all 0.15s; cursor: default; }
+.ds-icon:hover { background: var(--soft); border-color: rgba(107,78,255,0.25); }
+
+/* Motion tokens */
+.ds-motion-row { display: flex; flex-direction: column; gap: 10px; }
+.ds-token { display: flex; align-items: center; gap: 12px; }
+.ds-token-name { font-family: var(--mono); font-size: 11px; color: var(--accent); width: 140px; flex-shrink: 0; }
+.ds-token-val { font-size: 11px; color: var(--mid); }
+.ds-token-demo { height: 4px; border-radius: 2px; background: var(--accent); opacity: 0.3; flex: 1; }
+
+/* Spacing tokens */
+.ds-spacing-row { display: flex; flex-direction: column; gap: 8px; }
+.ds-sp { display: flex; align-items: center; gap: 10px; }
+.ds-sp-block { background: rgba(107,78,255,0.15); border-radius: 3px; height: 14px; }
+.ds-sp-label { font-family: var(--mono); font-size: 10px; color: var(--accent); width: 60px; flex-shrink: 0; }
+.ds-sp-val { font-size: 10px; color: var(--mid); }
+
+/* ── SCREENS SHOWCASE ── */
+.screens-dark { background: var(--dark); border-radius: 16px; padding: 28px 20px; margin-top: 32px; position: relative; overflow: hidden; }
+.screens-dark::before { content: ''; position: absolute; top: -80px; right: -80px; width: 340px; height: 340px; background: radial-gradient(circle, rgba(107,78,255,0.18) 0%, transparent 65%); border-radius: 50%; }
+.screens-dark::after { content: ''; position: absolute; bottom: -60px; left: 30%; width: 280px; height: 280px; background: radial-gradient(circle, rgba(255,107,107,0.08) 0%, transparent 65%); border-radius: 50%; }
+.sd-header { position: relative; z-index: 1; margin-bottom: 40px; }
+.sd-title { font-family: var(--serif); font-size: 26px; color: #fff; margin-bottom: 6px; }
+.sd-sub { font-size: 13px; color: rgba(255,255,255,0.35); }
+
+/* Scrollable screen row */
+.screen-scroll { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; position: relative; z-index: 1; }
+.screen-scroll::-webkit-scrollbar { height: 3px; }
+.screen-scroll::-webkit-scrollbar-track { background: rgba(255,255,255,0.05); border-radius: 2px; }
+.screen-scroll::-webkit-scrollbar-thumb { background: rgba(107,78,255,0.5); border-radius: 2px; }
+.sc-item { display: flex; flex-direction: column; align-items: center; }
+.sc-phone { border-radius: 32px; padding: 11px; border: 1.5px solid rgba(107,78,255,0.22); box-shadow: 0 24px 60px rgba(0,0,0,0.45); }
+.sc-phone.w190 { background: #1A1028; width: 190px; }
+.sc-phone.w200 { background: #160F2A; width: 200px; }
+.sc-notch { width: 40px; height: 5px; background: #0D0A1A; border-radius: 3px; margin: 0 auto 9px; }
+.sc-screen { border-radius: 22px; overflow: hidden; }
+.sc-label { font-size: 9px; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(255,255,255,0.22); text-align: center; margin-top: 12px; }
+
+/* individual screen content */
+/* Onboarding 1 */
+.ob1 { background: linear-gradient(155deg,#1A1028,#0D0820); padding: 16px 14px; min-height: 340px; }
+.ob1-logo { width: 40px; height: 40px; border-radius: 11px; background: var(--accent); display: flex; align-items: center; justify-content: center; margin-bottom: 16px; }
+.ob1-logo svg { width: 20px; height: 20px; fill: #fff; }
+.ob1-title { font-size: 16px; color: #fff; font-weight: 500; line-height: 1.3; margin-bottom: 6px; }
+.ob1-sub { font-size: 11px; color: rgba(255,255,255,0.35); line-height: 1.6; margin-bottom: 20px; }
+.ob1-dots { display: flex; gap: 5px; margin-bottom: 16px; }
+.ob1-dot { flex: 1; height: 3px; border-radius: 2px; background: rgba(255,255,255,0.1); }
+.ob1-dot.a { background: var(--accent); }
+.ob1-cta { background: var(--accent); border-radius: 10px; padding: 11px; text-align: center; font-size: 12px; font-weight: 500; color: #fff; margin-bottom: 8px; }
+.ob1-skip { text-align: center; font-size: 10px; color: rgba(255,255,255,0.25); }
+
+/* Onboarding 2: Goals */
+.ob2 { background: linear-gradient(155deg,#160F2E,#0A0618); padding: 14px 12px; min-height: 320px; }
+.ob2-title { font-size: 13px; color: #fff; font-weight: 500; margin-bottom: 4px; }
+.ob2-sub { font-size: 10px; color: rgba(255,255,255,0.3); margin-bottom: 14px; }
+.ob2-goals { display: flex; flex-direction: column; gap: 7px; margin-bottom: 14px; }
+.ob2-goal { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.07); border-radius: 9px; padding: 10px 12px; display: flex; align-items: center; gap: 10px; }
+.ob2-goal.sel { background: rgba(107,78,255,0.18); border-color: rgba(107,78,255,0.38); }
+.ob2-goal-check { width: 16px; height: 16px; border-radius: 50%; border: 1.5px solid rgba(255,255,255,0.15); flex-shrink: 0; }
+.ob2-goal.sel .ob2-goal-check { background: var(--accent); border-color: var(--accent); }
+.ob2-goal-text { font-size: 11px; color: rgba(255,255,255,0.55); }
+.ob2-goal.sel .ob2-goal-text { color: rgba(255,255,255,0.85); }
+.ob2-cta { background: var(--accent); border-radius: 10px; padding: 10px; text-align: center; font-size: 11px; font-weight: 500; color: #fff; }
+.ob2-dots { display: flex; gap: 4px; margin-bottom: 12px; }
+.ob2-d { flex: 1; height: 2px; border-radius: 2px; background: rgba(255,255,255,0.08); }
+.ob2-d.a { background: var(--accent); }
+
+/* Home screen */
+.sh { background: linear-gradient(155deg,#1A1028,#0D0820); padding: 13px 11px; }
+.sh-t { font-size: 9px; color: rgba(255,255,255,0.25); text-align: center; margin-bottom: 10px; letter-spacing: 0.06em; }
+.sh-g { font-size: 13px; color: #fff; font-weight: 500; margin-bottom: 10px; }
+.sh-card { background: rgba(107,78,255,0.17); border: 1px solid rgba(107,78,255,0.28); border-radius: 11px; padding: 10px; margin-bottom: 8px; }
+.sh-cl { font-size: 7px; text-transform: uppercase; letter-spacing: 0.1em; color: rgba(255,255,255,0.28); margin-bottom: 3px; }
+.sh-ct { font-size: 11px; color: #fff; margin-bottom: 7px; }
+.sh-p { height: 3px; background: rgba(255,255,255,0.08); border-radius: 2px; }
+.sh-pf { height: 3px; width: 65%; background: linear-gradient(90deg,#6B4EFF,#A78BFF); border-radius: 2px; }
+.sh-moods { display: grid; grid-template-columns: repeat(4,1fr); gap: 3px; margin-bottom: 8px; }
+.sh-m { background: rgba(255,255,255,0.04); border-radius: 6px; padding: 5px 2px; text-align: center; font-size: 11px; }
+.sh-m.a { background: rgba(107,78,255,0.22); border: 1px solid rgba(107,78,255,0.38); }
+.sh-ses { background: rgba(255,107,107,0.09); border: 1px solid rgba(255,107,107,0.18); border-radius: 9px; padding: 8px; display: flex; justify-content: space-between; align-items: center; }
+.sh-st { font-size: 10px; color: #fff; }
+.sh-sn { font-size: 15px; color: rgba(255,107,107,0.85); font-weight: 300; }
+.sh-streak { display: flex; gap: 5px; margin-top: 8px; }
+.sh-day { flex: 1; height: 20px; border-radius: 4px; background: rgba(107,78,255,0.12); display: flex; align-items: center; justify-content: center; font-size: 7px; color: rgba(255,255,255,0.2); }
+.sh-day.d { background: rgba(107,78,255,0.3); color: rgba(107,78,255,0.9); }
+
+/* Focus timer */
+.sf { background: linear-gradient(155deg,#160F2E,#0A0618); padding: 14px 12px; text-align: center; }
+.sf-l { font-size: 8px; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255,255,255,0.28); margin-bottom: 14px; }
+.sf-ring { width: 108px; height: 108px; border-radius: 50%; background: conic-gradient(#6B4EFF 0% 72%, rgba(107,78,255,0.1) 72% 100%); margin: 0 auto 12px; display: flex; align-items: center; justify-content: center; position: relative; }
+.sf-inner { width: 92px; height: 92px; border-radius: 50%; background: #160F2E; display: flex; flex-direction: column; align-items: center; justify-content: center; position: absolute; }
+.sf-num { font-size: 24px; font-weight: 300; color: #fff; line-height: 1; }
+.sf-unit { font-size: 7px; color: rgba(255,255,255,0.25); letter-spacing: 0.08em; }
+.sf-sn { font-size: 10px; color: rgba(255,255,255,0.38); margin-bottom: 12px; }
+.sf-ctrl { display: flex; justify-content: center; gap: 10px; margin-bottom: 10px; }
+.sf-b { width: 32px; height: 32px; border-radius: 50%; background: rgba(255,255,255,0.05); display: flex; align-items: center; justify-content: center; }
+.sf-b.pl { background: var(--accent); width: 40px; height: 40px; }
+.sf-b svg { width: 12px; height: 12px; fill: rgba(255,255,255,0.45); }
+.sf-b.pl svg { fill: #fff; }
+.sf-ts { display: flex; justify-content: center; gap: 4px; flex-wrap: wrap; }
+.sf-tag { background: rgba(107,78,255,0.12); border-radius: 100px; padding: 2px 8px; font-size: 8px; color: rgba(107,78,255,0.7); }
+.sf-blocks { display: flex; gap: 3px; justify-content: center; margin-top: 10px; }
+.sf-bl { width: 24px; height: 5px; border-radius: 2px; background: rgba(107,78,255,0.3); }
+.sf-bl.done { background: var(--accent); }
+
+/* Mood checkin */
+.sm { background: linear-gradient(155deg,#1A1028,#0D0820); padding: 14px 12px; }
+.sm-t { font-size: 13px; color: #fff; font-weight: 500; margin-bottom: 3px; }
+.sm-s { font-size: 10px; color: rgba(255,255,255,0.3); margin-bottom: 14px; }
+.sm-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 6px; margin-bottom: 12px; }
+.sm-btn { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.06); border-radius: 11px; padding: 11px 5px; text-align: center; }
+.sm-btn.sel { background: rgba(107,78,255,0.2); border-color: rgba(107,78,255,0.4); }
+.sm-emoji { font-size: 20px; display: block; margin-bottom: 3px; }
+.sm-word { font-size: 8px; color: rgba(255,255,255,0.35); }
+.sm-btn.sel .sm-word { color: rgba(107,78,255,0.85); }
+.sm-note { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06); border-radius: 9px; padding: 9px 11px; font-size: 10px; color: rgba(255,255,255,0.18); margin-bottom: 10px; }
+.sm-energy { margin-bottom: 10px; }
+.sm-e-l { font-size: 9px; color: rgba(255,255,255,0.28); margin-bottom: 6px; }
+.sm-slider { height: 4px; background: rgba(255,255,255,0.08); border-radius: 2px; position: relative; }
+.sm-sl-fill { height: 4px; width: 70%; background: linear-gradient(90deg,#6B4EFF,#A78BFF); border-radius: 2px; }
+.sm-sl-thumb { width: 12px; height: 12px; border-radius: 50%; background: #fff; position: absolute; left: 68%; top: -4px; box-shadow: 0 2px 6px rgba(0,0,0,0.4); }
+.sm-cta { background: var(--accent); border-radius: 10px; padding: 10px; text-align: center; font-size: 11px; font-weight: 500; color: #fff; }
+
+/* Insights screen */
+.si { background: linear-gradient(155deg,#160F2E,#0A0618); padding: 14px 12px; }
+.si-t { font-size: 13px; color: #fff; font-weight: 500; margin-bottom: 12px; }
+.si-week { display: flex; gap: 3px; margin-bottom: 12px; align-items: flex-end; }
+.si-bar-wrap { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 3px; }
+.si-bar { width: 100%; border-radius: 3px 3px 0 0; background: rgba(107,78,255,0.25); }
+.si-bar.high { background: var(--accent); }
+.si-bar-d { font-size: 7px; color: rgba(255,255,255,0.25); }
+.si-mood-trend { background: rgba(255,255,255,0.04); border-radius: 10px; padding: 10px; margin-bottom: 8px; }
+.si-mt-l { font-size: 8px; text-transform: uppercase; letter-spacing: 0.08em; color: rgba(255,255,255,0.25); margin-bottom: 8px; }
+.si-mt-row { display: flex; align-items: center; gap: 6px; }
+.si-mt-emoji { font-size: 14px; }
+.si-mt-line { flex: 1; height: 2px; background: rgba(107,78,255,0.2); border-radius: 1px; position: relative; }
+.si-mt-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); position: absolute; }
+.si-insight-c { background: rgba(107,78,255,0.1); border: 1px solid rgba(107,78,255,0.2); border-radius: 9px; padding: 9px; }
+.si-ic-l { font-size: 7px; text-transform: uppercase; letter-spacing: 0.08em; color: rgba(107,78,255,0.6); margin-bottom: 4px; }
+.si-ic-t { font-size: 10px; color: rgba(255,255,255,0.6); line-height: 1.5; }
+
+/* Sessions screen */
+.ss { background: linear-gradient(155deg,#1A1028,#0D0820); padding: 14px 12px; }
+.ss-t { font-size: 13px; color: #fff; font-weight: 500; margin-bottom: 12px; }
+.ss-filter { display: flex; gap: 5px; margin-bottom: 12px; }
+.ss-f { background: rgba(255,255,255,0.05); border-radius: 100px; padding: 4px 10px; font-size: 9px; color: rgba(255,255,255,0.3); }
+.ss-f.a { background: var(--accent); color: #fff; }
+.ss-coach { background: rgba(255,255,255,0.04); border-radius: 10px; padding: 10px; display: flex; gap: 9px; align-items: center; margin-bottom: 7px; border: 1px solid rgba(255,255,255,0.05); }
+.ss-av { width: 32px; height: 32px; border-radius: 50%; background: rgba(107,78,255,0.25); display: flex; align-items: center; justify-content: center; font-size: 14px; flex-shrink: 0; }
+.ss-name { font-size: 11px; color: #fff; font-weight: 500; }
+.ss-role { font-size: 9px; color: rgba(255,255,255,0.3); }
+.ss-book { background: rgba(107,78,255,0.2); border-radius: 6px; padding: 4px 8px; font-size: 9px; color: rgba(107,78,255,0.9); margin-left: auto; white-space: nowrap; }
+
+/* Profile screen */
+.sp { background: linear-gradient(155deg,#160F2E,#0A0618); padding: 14px 12px; }
+.sp-av { width: 48px; height: 48px; border-radius: 50%; background: rgba(107,78,255,0.25); border: 2px solid rgba(107,78,255,0.45); margin: 0 auto 7px; display: flex; align-items: center; justify-content: center; font-size: 20px; }
+.sp-name { font-size: 13px; color: #fff; text-align: center; font-weight: 500; margin-bottom: 2px; }
+.sp-sub { font-size: 9px; color: rgba(255,255,255,0.25); text-align: center; margin-bottom: 12px; }
+.sp-stats { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 5px; margin-bottom: 10px; }
+.sp-s { background: rgba(255,255,255,0.04); border-radius: 7px; padding: 7px 4px; text-align: center; }
+.sp-sn { font-size: 15px; color: #fff; font-weight: 300; }
+.sp-sl { font-size: 7px; color: rgba(255,255,255,0.22); }
+.sp-streak { background: rgba(107,78,255,0.13); border: 1px solid rgba(107,78,255,0.23); border-radius: 9px; padding: 9px 10px; display: flex; align-items: center; justify-content: space-between; margin-bottom: 7px; }
+.sp-stl { font-size: 9px; color: rgba(255,255,255,0.4); }
+.sp-stv { font-size: 15px; color: #fff; font-weight: 300; }
+.sp-cal { display: grid; grid-template-columns: repeat(7,1fr); gap: 2px; }
+.sp-cd { width: 100%; aspect-ratio: 1; border-radius: 3px; background: rgba(255,255,255,0.04); display: flex; align-items: center; justify-content: center; font-size: 6px; color: rgba(255,255,255,0.15); }
+.sp-cd.d { background: rgba(107,78,255,0.28); color: rgba(107,78,255,0.8); }
+.sp-cd.t { background: var(--accent); color: #fff; }
+
+/* ── INTERACTIVE PROTOTYPE SECTION ── */
+.proto-section { background: var(--dark); border-radius: 24px; padding: 48px; margin-top: 48px; position: relative; overflow: hidden; }
+.proto-section::before { content: ''; position: absolute; top: -60px; left: -60px; width: 300px; height: 300px; background: radial-gradient(circle, rgba(107,78,255,0.15) 0%, transparent 65%); border-radius: 50%; }
+.proto-grid { display: grid; grid-template-columns: 1fr; gap: 40px; align-items: center; position: relative; z-index: 1; }
+.proto-phone-wrap { display: flex; justify-content: center; }
+.proto-phone { background: #1A1028; border-radius: 44px; padding: 14px; border: 1.5px solid rgba(107,78,255,0.3); box-shadow: 0 40px 100px rgba(0,0,0,0.6); width: 240px; }
+.proto-screen-area { border-radius: 32px; overflow: hidden; min-height: 440px; background: linear-gradient(155deg,#1A1028,#0D0820); position: relative; }
+
+/* Tabs */
+.proto-tabs { display: flex; gap: 8px; padding: 14px 14px 0; }
+.ptab { flex: 1; padding: 7px 6px; border-radius: 8px; font-size: 9px; font-weight: 500; text-align: center; cursor: pointer; transition: all 0.2s; color: rgba(255,255,255,0.3); }
+.ptab.active { background: rgba(107,78,255,0.25); color: rgba(107,78,255,0.9); }
+
+/* Proto screen panels */
+.proto-panel { display: none; padding: 12px 14px; }
+.proto-panel.active { display: block; }
+
+/* States explanation */
+.proto-info { color: rgba(255,255,255,0.9); }
+.proto-info h3 { font-family: var(--serif); font-size: 22px; color: #fff; margin-bottom: 8px; }
+.proto-info p { font-size: 13px; color: rgba(255,255,255,0.45); line-height: 1.7; margin-bottom: 20px; }
+.proto-state-list { display: flex; flex-direction: column; gap: 10px; }
+.proto-state { display: flex; gap: 12px; align-items: flex-start; padding: 12px; background: rgba(255,255,255,0.04); border-radius: 10px; border: 1px solid rgba(255,255,255,0.06); cursor: pointer; transition: all 0.15s; }
+.proto-state:hover { border-color: rgba(107,78,255,0.35); background: rgba(107,78,255,0.08); }
+.proto-state.active { border-color: rgba(107,78,255,0.45); background: rgba(107,78,255,0.12); }
+.ps-dot { width: 8px; height: 8px; border-radius: 50%; background: rgba(107,78,255,0.4); flex-shrink: 0; margin-top: 4px; }
+.proto-state.active .ps-dot { background: var(--accent); box-shadow: 0 0 8px var(--accent); }
+.ps-text h5 { font-size: 12px; font-weight: 600; color: rgba(255,255,255,0.8); margin-bottom: 2px; }
+.ps-text p { font-size: 11px; color: rgba(255,255,255,0.35); line-height: 1.5; }
+
+/* ── INSIGHTS ── */
+.insight-row { display: flex; flex-direction: column; gap: 10px; margin-top: 48px; }
+.ip { display: flex; gap: 20px; background: var(--white); border-radius: var(--r); padding: 20px 24px; border: 1px solid var(--rule); transition: transform 0.15s; cursor: default; }
+.ip:hover { transform: translateX(4px); border-color: rgba(107,78,255,0.25); }
+.ip-n { font-family: var(--serif); font-size: 30px; color: var(--rule); line-height: 1; flex-shrink: 0; width: 38px; }
+.ip-b h4 { font-size: 14px; font-weight: 600; color: var(--fg); margin-bottom: 4px; }
+.ip-b p { font-size: 13px; color: var(--mid); line-height: 1.65; }
+.ip-tag { display: inline-block; margin-top: 8px; background: var(--soft); color: var(--accent); font-size: 9px; font-weight: 600; padding: 2px 10px; border-radius: 100px; letter-spacing: 0.06em; }
+
+/* ── REFLECTION ── */
+.ref-grid { display: grid; grid-template-columns: 1fr; gap: 20px; margin-top: 48px; }
+.ref-c { padding: 30px 26px; border-radius: var(--r); }
+.ref-c.l { background: var(--soft); border: 1px solid rgba(107,78,255,0.12); }
+.ref-c.d { background: var(--dark); }
+.ref-c h3 { font-size: 14px; font-weight: 600; margin-bottom: 14px; }
+.ref-c.l h3 { color: var(--accent); }
+.ref-c.d h3 { color: rgba(255,255,255,0.35); }
+.ref-list { list-style: none; display: flex; flex-direction: column; gap: 9px; }
+.ref-list li { font-size: 13px; line-height: 1.65; display: flex; gap: 9px; }
+.ref-c.l .ref-list li { color: rgba(107,78,255,0.7); }
+.ref-c.d .ref-list li { color: rgba(255,255,255,0.4); }
+.ref-list li::before { content: '→'; flex-shrink: 0; }
+.ref-c.l li::before { color: var(--accent); }
+.ref-c.d li::before { color: rgba(107,78,255,0.45); }
+
+/* FOOTER */
+footer { padding: 60px 0; border-top: 1px solid var(--rule); text-align: center; }
+.foot-name { font-family: var(--serif); font-size: 22px; color: var(--fg); margin-bottom: 7px; }
+footer p { font-size: 13px; color: var(--light); }
+.foot-links { display: flex; justify-content: center; gap: 28px; margin-top: 18px; }
+.foot-links a { font-size: 13px; color: var(--mid); text-decoration: none; transition: color 0.2s; }
+.foot-links a:hover { color: var(--accent); }
+
+/* ANIMATIONS */
+@keyframes fadeUp { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:translateY(0); } }
+.hero-pills  { animation: fadeUp 0.55s 0.0s both; }
+.hero h1     { animation: fadeUp 0.55s 0.1s both; }
+.hero-desc   { animation: fadeUp 0.55s 0.2s both; }
+.hmeta       { animation: fadeUp 0.55s 0.3s both; }
+.hero-phones { animation: fadeUp 0.7s  0.4s both; }
+
+/* RESPONSIVE */
+@media(max-width:768px){
+  
+  
+  .hero { padding: 110px 0 0; }
+  .hero-grid { grid-template-columns: 1fr; }
+  .hero-phones { display: none; }
+  .prob-grid, .ds-type-row, .ds-comp-grid, .ref-grid, .proto-grid { grid-template-columns: 1fr; }
+  .stat-dark { grid-template-columns: 1fr; }
+  .wf-row { grid-template-columns: 1fr 1fr; }
+  .screens-dark { padding: 32px 20px; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-name">Akshaya Prasannakumar</a>
+  <div class="nav-links">
+    <a href="#overview">Overview</a>
+    <a href="#wireframes">Wireframes</a>
+    <a href="#flow">User Flow</a>
+    <a href="#system">Design System</a>
+    <a href="#screens">Screens</a>
+  </div>
+</nav>
+
+<!-- ══ HERO ══ -->
+<section class="hero">
+  <div class="wrap-wide">
+    <div class="hero-grid">
+      <div class="hero-left">
+        <div class="hero-pills">
+          <span class="hpill">UX Research</span>
+          <span class="hpill">UX/UI Design</span>
+          <span class="hpill r">Mental Health</span>
+          <span class="hpill t">Focus & Flow</span>
+        </div>
+        <h1>Focus on <em>YOU</em> —<br>where calm meets clarity</h1>
+        <p class="hero-desc">A mental health and focus app helping users manage anxiety, build healthy routines, and reclaim their attention — through evidence-based UX patterns and warm interaction design.</p>
+        <div class="hmeta">
+          <div class="hm"><span class="hm-l">Role</span><span class="hm-v">UX/UI Designer</span></div>
+          <div class="hm"><span class="hm-l">Type</span><span class="hm-v">Mobile App</span></div>
+          <div class="hm"><span class="hm-l">Process</span><span class="hm-v">Research → UI</span></div>
+          <div class="hm"><span class="hm-l">Tools</span><span class="hm-v">Figma · Miro</span></div>
+        </div>
+      </div>
+      <div class="hero-phones">
+        <div class="h-phone side">
+          <div class="h-notch"></div>
+          <div class="h-screen">
+            <div class="ps-timer">
+              <div class="ps-timer-l">Focus · Deep Work</div>
+              <div class="timer-ring">
+                <div class="timer-inner">
+                  <div class="timer-num">18</div>
+                  <div class="timer-unit">MIN LEFT</div>
+                </div>
+              </div>
+              <div class="ps-timer-name">Block 2 of 3</div>
+              <div class="ps-ctrl">
+                <div class="ps-btn"><svg viewBox="0 0 20 20"><rect x="4" y="4" width="4" height="12"/><rect x="12" y="4" width="4" height="12"/></svg></div>
+                <div class="ps-btn p"><svg viewBox="0 0 20 20"><polygon points="6,4 16,10 6,16"/></svg></div>
+                <div class="ps-btn"><svg viewBox="0 0 20 20"><path d="M4 4l12 12M16 4L4 16" stroke="rgba(255,255,255,0.45)" stroke-width="2" fill="none"/></svg></div>
+              </div>
+              <div class="ps-tags"><div class="ps-t">🎵 Ambient</div><div class="ps-t">🔕 DND</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="h-phone main">
+          <div class="h-notch"></div>
+          <div class="h-screen">
+            <div class="ps-home">
+              <div class="ps-time-sm">9:41 AM · WEDNESDAY</div>
+              <div class="ps-greet">Good morning, Zareen 👋</div>
+              <div class="ps-focus-c">
+                <div class="ps-fc-l">Today's session</div>
+                <div class="ps-fc-t">Deep Work · Block 1</div>
+                <div class="ps-prog"><div class="ps-prog-f"></div></div>
+              </div>
+              <div class="ps-moods">
+                <div class="ps-mood a">😌</div>
+                <div class="ps-mood">😤</div>
+                <div class="ps-mood">😴</div>
+                <div class="ps-mood">🔥</div>
+              </div>
+              <div class="ps-sess">
+                <div class="ps-sess-t">1-on-1 · Sara<br><span style="font-size:8px;color:rgba(255,255,255,0.25)">Book Now ↗</span></div>
+                <div class="ps-sess-n">3<span style="font-size:9px;color:rgba(255,150,150,0.5)">pm</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ OVERVIEW ══ -->
+<section id="overview">
+  <div class="wrap">
+    <span class="snum">01</span>
+    <div class="tag"><span></span>Problem Space</div>
+    <h2>Productivity tools feel cold. Mental health apps feel <em>clinical</em>.</h2>
+    <p class="lead">Neither speaks to the whole person trying to perform and feel okay at the same time. Focuzone bridges the gap.</p>
+    <div class="prob-grid">
+      <div class="prob-c">
+        <h4>Fragmented tooling</h4>
+        <p>Users juggle 4+ separate apps for focus timers, mood journals, and therapy booking — creating context-switching overhead that worsens the problem they're trying to solve.</p>
+      </div>
+      <div class="prob-c">
+        <h4>Accessibility barriers</h4>
+        <p>Mental health support remains out of reach due to cost, waitlists, or stigma. Digital tools must lower this barrier — not replicate it.</p>
+      </div>
+      <div class="prob-c">
+        <h4>Clinical UX language</h4>
+        <p>Most mental health apps use diagnostic or cold framing. "Log your emotional state" increases the anxiety it's trying to reduce. Language is a design decision.</p>
+      </div>
+      <div class="prob-c">
+        <h4>No onboarding support</h4>
+        <p>Empty dashboards require effort from users who are already overwhelmed. The blank-slate UX is a failure state for anyone struggling with focus or anxiety.</p>
+      </div>
+    </div>
+    <div class="stat-dark">
+      <div class="stat-d-item">
+        <div class="stat-d-num">1 in <span>4</span></div>
+        <div class="stat-d-l">people experience a mental health condition each year — most never receive support</div>
+      </div>
+      <div class="stat-d-item">
+        <div class="stat-d-num"><span>73%</span></div>
+        <div class="stat-d-l">of knowledge workers cite focus and concentration as their #1 daily challenge</div>
+      </div>
+      <div class="stat-d-item">
+        <div class="stat-d-num"><span>6+</span></div>
+        <div class="stat-d-l">apps used on average by someone managing both productivity and mental health</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ WIREFRAMES ══ -->
+<section id="wireframes">
+  <div class="wrap">
+    <span class="snum">02</span>
+    <div class="tag"><span></span>Wireframes</div>
+    <h2>Lo-fi first — <em>structure before style</em></h2>
+    <p class="lead">Before any colour or typography, low-fidelity wireframes established the information architecture, screen hierarchy, and critical flows across all five core surfaces.</p>
+    <div class="wf-section">
+      <div class="wf-title">Lo-fidelity wireframes — 5 core screens</div>
+      <div class="wf-sub">Grayscale explorations to validate structure, layout, and content priority before visual design began.</div>
+      <div class="wf-row">
+
+        <!-- Onboarding -->
+        <div class="wf-frame">
+          <div class="wf-phone">
+            <div class="wf-screen">
+              <div class="wf-notch"></div>
+              <div class="wf-box" style="height:28px;margin-bottom:8px"></div>
+              <div class="wf-bar short" style="margin-bottom:8px"></div>
+              <div class="wf-bar med" style="margin-bottom:4px"></div>
+              <div class="wf-bar short"></div>
+              <div style="height:8px"></div>
+              <div class="wf-box"><div class="wf-box-h"></div><div class="wf-box-line"></div></div>
+              <div class="wf-box"><div class="wf-box-h"></div><div class="wf-box-line"></div></div>
+              <div class="wf-btn"></div>
+            </div>
+          </div>
+          <div class="wf-label">Onboarding</div>
+        </div>
+
+        <div class="wf-arrow">›</div>
+
+        <!-- Home -->
+        <div class="wf-frame">
+          <div class="wf-phone">
+            <div class="wf-screen">
+              <div class="wf-notch"></div>
+              <div class="wf-bar short" style="margin-bottom:6px"></div>
+              <div class="wf-bar med" style="margin-bottom:8px"></div>
+              <div class="wf-box">
+                <div class="wf-box-h"></div>
+                <div class="wf-box-line s"></div>
+                <div class="wf-prog-area"><div class="wf-prog-fill"></div></div>
+              </div>
+              <div class="wf-grid-2">
+                <div class="wf-cell"></div><div class="wf-cell"></div>
+                <div class="wf-cell"></div><div class="wf-cell"></div>
+              </div>
+              <div class="wf-box"><div class="wf-box-h"></div></div>
+            </div>
+          </div>
+          <div class="wf-label">Home</div>
+        </div>
+
+        <div class="wf-arrow">›</div>
+
+        <!-- Focus Timer -->
+        <div class="wf-frame">
+          <div class="wf-phone">
+            <div class="wf-screen">
+              <div class="wf-notch"></div>
+              <div class="wf-bar short" style="margin:0 auto 12px;width:50%"></div>
+              <div class="wf-circle"><div class="wf-circle-in"></div></div>
+              <div class="wf-bar short" style="margin:0 auto 10px;width:60%"></div>
+              <div style="display:flex;gap:4px;justify-content:center;margin-bottom:10px">
+                <div style="width:22px;height:22px;border-radius:50%;background:#D0CCC4"></div>
+                <div style="width:28px;height:28px;border-radius:50%;background:#B8B4D0"></div>
+                <div style="width:22px;height:22px;border-radius:50%;background:#D0CCC4"></div>
+              </div>
+              <div style="display:flex;gap:3px;justify-content:center">
+                <div style="width:18px;height:4px;border-radius:2px;background:#B8B4D0"></div>
+                <div style="width:18px;height:4px;border-radius:2px;background:#D0CCC4"></div>
+                <div style="width:18px;height:4px;border-radius:2px;background:#D0CCC4"></div>
+              </div>
+            </div>
+          </div>
+          <div class="wf-label">Focus Timer</div>
+        </div>
+
+        <div class="wf-arrow">›</div>
+
+        <!-- Mood Check-in -->
+        <div class="wf-frame">
+          <div class="wf-phone">
+            <div class="wf-screen">
+              <div class="wf-notch"></div>
+              <div class="wf-bar med" style="margin-bottom:3px"></div>
+              <div class="wf-bar short" style="margin-bottom:10px"></div>
+              <div class="wf-grid-3">
+                <div class="wf-cell-t"></div><div class="wf-cell-t" style="background:#B8B4D0"></div><div class="wf-cell-t"></div>
+                <div class="wf-cell-t"></div><div class="wf-cell-t"></div><div class="wf-cell-t"></div>
+              </div>
+              <div class="wf-box" style="height:28px;margin-bottom:8px"></div>
+              <div class="wf-prog-area"><div class="wf-prog-fill" style="width:70%"></div></div>
+              <div class="wf-btn"></div>
+            </div>
+          </div>
+          <div class="wf-label">Mood Check-in</div>
+        </div>
+
+        <div class="wf-arrow">›</div>
+
+        <!-- Insights -->
+        <div class="wf-frame">
+          <div class="wf-phone">
+            <div class="wf-screen">
+              <div class="wf-notch"></div>
+              <div class="wf-bar med" style="margin-bottom:8px"></div>
+              <div style="display:flex;gap:2px;align-items:flex-end;height:40px;margin-bottom:8px">
+                <div style="flex:1;background:#D0CCC4;border-radius:2px 2px 0 0;height:60%"></div>
+                <div style="flex:1;background:#D0CCC4;border-radius:2px 2px 0 0;height:80%"></div>
+                <div style="flex:1;background:#B8B4D0;border-radius:2px 2px 0 0;height:100%"></div>
+                <div style="flex:1;background:#D0CCC4;border-radius:2px 2px 0 0;height:45%"></div>
+                <div style="flex:1;background:#D0CCC4;border-radius:2px 2px 0 0;height:70%"></div>
+                <div style="flex:1;background:#D0CCC4;border-radius:2px 2px 0 0;height:55%"></div>
+                <div style="flex:1;background:#D0CCC4;border-radius:2px 2px 0 0;height:85%"></div>
+              </div>
+              <div class="wf-box"><div class="wf-box-h"></div><div class="wf-box-line s"></div></div>
+              <div class="wf-box"><div class="wf-box-h"></div></div>
+            </div>
+          </div>
+          <div class="wf-label">Insights</div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Wireframe annotations -->
+    <div style="background:var(--white);border-radius:var(--r);padding:28px;border:1px solid var(--rule);margin-top:20px">
+      <div style="font-size:13px;font-weight:600;color:var(--fg);margin-bottom:16px">Key layout decisions made at wireframe stage</div>
+      <div style="display:grid;grid-template-columns:1fr;gap:16px">
+        <div style="font-size:12px;color:var(--mid);padding:12px;background:var(--bg);border-radius:8px;line-height:1.6"><strong style="color:var(--fg);display:block;margin-bottom:4px">Mood before tasks</strong>Check-in placed before the focus timer — mood data informs session length recommendations.</div>
+        <div style="font-size:12px;color:var(--mid);padding:12px;background:var(--bg);border-radius:8px;line-height:1.6"><strong style="color:var(--fg);display:block;margin-bottom:4px">Timer full-screen</strong>Focus session takes over the entire screen — no distractions, no navigation during a session.</div>
+        <div style="font-size:12px;color:var(--mid);padding:12px;background:var(--bg);border-radius:8px;line-height:1.6"><strong style="color:var(--fg);display:block;margin-bottom:4px">Single primary CTA</strong>Every screen has exactly one primary action — reducing decision fatigue for users already overwhelmed.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ USER FLOW ══ -->
+<section id="flow">
+  <div class="wrap">
+    <span class="snum">03</span>
+    <div class="tag"><span></span>User Flow</div>
+    <h2>From first open to <em>first win</em> — in under 5 minutes</h2>
+    <p class="lead">The critical path for a new user: onboarding → mood check-in → focus session → session booked. Each step designed to deliver value before asking for commitment.</p>
+    <div class="uf-canvas">
+      <div style="font-size:11px;font-weight:600;color:var(--fg);margin-bottom:6px">Primary user flow — new user journey</div>
+      <div style="font-size:11px;color:var(--mid);margin-bottom:28px">Covers onboarding, daily check-in, focus session, and professional session booking</div>
+
+      <div class="uf-row">
+        <div class="uf-col">
+          <div class="uf-col-title">Entry</div>
+          <div class="uf-node start">App open</div>
+          <div class="uf-vline"></div>
+          <div class="uf-node key">Welcome screen</div>
+          <div class="uf-vline"></div>
+          <div class="uf-node">Set goals</div>
+          <div class="uf-vline"></div>
+          <div class="uf-node">Pick focus style</div>
+        </div>
+        <div class="uf-col">
+          <div class="uf-col-title">Check-in</div>
+          <div class="uf-node key">Mood log</div>
+          <div class="uf-vline"></div>
+          <div class="uf-node">Energy level</div>
+          <div class="uf-vline"></div>
+          <div class="uf-node decision"><span>Anxious?</span></div>
+          <div class="uf-vline"></div>
+          <div class="uf-node warn">Breathing exercise</div>
+        </div>
+        <div class="uf-col">
+          <div class="uf-col-title">Focus</div>
+          <div class="uf-node key">Session start</div>
+          <div class="uf-vline"></div>
+          <div class="uf-node">Timer running</div>
+          <div class="uf-vline"></div>
+          <div class="uf-node">Break prompt</div>
+          <div class="uf-vline"></div>
+          <div class="uf-node">Resume / end</div>
+        </div>
+        <div class="uf-col">
+          <div class="uf-col-title">Support</div>
+          <div class="uf-node">Browse coaches</div>
+          <div class="uf-vline"></div>
+          <div class="uf-node key">Book session</div>
+          <div class="uf-vline"></div>
+          <div class="uf-node">Pre-session note</div>
+          <div class="uf-vline"></div>
+          <div class="uf-node warn">Reminder set</div>
+        </div>
+        <div class="uf-col">
+          <div class="uf-col-title">Reflect</div>
+          <div class="uf-node">Post-session</div>
+          <div class="uf-vline"></div>
+          <div class="uf-node">Streak update</div>
+          <div class="uf-vline"></div>
+          <div class="uf-node key">Insights grow</div>
+          <div class="uf-vline"></div>
+          <div class="uf-node end">Profile matures</div>
+        </div>
+      </div>
+
+      <!-- Legend -->
+      <div style="display:flex;gap:16px;margin-top:24px;flex-wrap:wrap;padding-top:20px;border-top:1px solid var(--rule)">
+        <div style="display:flex;align-items:center;gap:6px;font-size:11px;color:var(--mid)"><div style="width:28px;height:18px;background:var(--accent);border-radius:4px"></div>Entry point</div>
+        <div style="display:flex;align-items:center;gap:6px;font-size:11px;color:var(--mid)"><div style="width:28px;height:18px;background:var(--soft);border:1px solid rgba(107,78,255,0.3);border-radius:4px"></div>Key moment</div>
+        <div style="display:flex;align-items:center;gap:6px;font-size:11px;color:var(--mid)"><div style="width:28px;height:18px;background:var(--soft2);border:1px solid rgba(255,107,107,0.25);border-radius:4px"></div>Conditional path</div>
+        <div style="display:flex;align-items:center;gap:6px;font-size:11px;color:var(--mid)"><div style="width:28px;height:18px;background:var(--accent3);border-radius:4px"></div>End state</div>
+        <div style="display:flex;align-items:center;gap:6px;font-size:11px;color:var(--mid)"><div style="width:18px;height:18px;background:var(--bg);border:1.5px solid var(--rule);transform:rotate(45deg);border-radius:2px"></div>Decision point</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ DESIGN SYSTEM ══ -->
+<section id="system">
+  <div class="wrap">
+    <span class="snum">04</span>
+    <div class="tag teal"><span></span>Design System</div>
+    <h2>Tokens, components, and <em>patterns</em> — built to scale</h2>
+    <p class="lead">A unified design system built in Figma — from colour tokens and typography scales to a full component library — ensuring every screen speaks the same visual language.</p>
+
+    <div class="ds-full">
+
+      <!-- Colour tokens -->
+      <div style="margin-bottom:40px">
+        <div style="font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--light);margin-bottom:20px">Colour Tokens</div>
+        <div class="ds-palette">
+          <div class="ds-swatch">
+            <div class="ds-color" style="background:#6B4EFF"></div>
+            <div class="ds-swatch-name">Primary</div>
+            <div class="ds-swatch-hex">#6B4EFF</div>
+            <div class="ds-swatch-role">Actions, links, focus</div>
+          </div>
+          <div class="ds-swatch">
+            <div class="ds-color" style="background:#A78BFF"></div>
+            <div class="ds-swatch-name">Primary Light</div>
+            <div class="ds-swatch-hex">#A78BFF</div>
+            <div class="ds-swatch-role">Gradients, hover</div>
+          </div>
+          <div class="ds-swatch">
+            <div class="ds-color" style="background:#FF6B6B"></div>
+            <div class="ds-swatch-name">Alert / Warm</div>
+            <div class="ds-swatch-hex">#FF6B6B</div>
+            <div class="ds-swatch-role">Sessions, urgency</div>
+          </div>
+          <div class="ds-swatch">
+            <div class="ds-color" style="background:#2EC4B6"></div>
+            <div class="ds-swatch-name">Calm / Success</div>
+            <div class="ds-swatch-hex">#2EC4B6</div>
+            <div class="ds-swatch-role">Positive states</div>
+          </div>
+          <div class="ds-swatch">
+            <div class="ds-color" style="background:#0D0A1A"></div>
+            <div class="ds-swatch-name">Dark Surface</div>
+            <div class="ds-swatch-hex">#0D0A1A</div>
+            <div class="ds-swatch-role">App background</div>
+          </div>
+          <div class="ds-swatch">
+            <div class="ds-color" style="background:#EDE9FF;border:1px solid #E2E0DA"></div>
+            <div class="ds-swatch-name">Soft Purple</div>
+            <div class="ds-swatch-hex">#EDE9FF</div>
+            <div class="ds-swatch-role">Light mode bg</div>
+          </div>
+          <div class="ds-swatch">
+            <div class="ds-color" style="background:#F5F3EF;border:1px solid #E2E0DA"></div>
+            <div class="ds-swatch-name">Surface</div>
+            <div class="ds-swatch-hex">#F5F3EF</div>
+            <div class="ds-swatch-role">Page background</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Typography -->
+      <div style="margin-bottom:40px">
+        <div style="font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--light);margin-bottom:20px">Typography Scale</div>
+        <div class="ds-type-row">
+          <div class="ds-type-card">
+            <div class="ds-type-label">Display / Hero</div>
+            <div class="ds-type-display">Focus on<br><em>YOU</em></div>
+            <div style="margin-top:10px;font-size:10px;font-family:var(--mono);color:var(--light)">Playfair Display · 44–64px · Italic accent</div>
+          </div>
+          <div class="ds-type-card">
+            <div class="ds-type-label">Heading & Body Scale</div>
+            <div style="display:flex;flex-direction:column;gap:8px">
+              <div class="ds-type-heading">Section heading</div>
+              <div style="font-size:16px;color:var(--fg)">Subheading / label</div>
+              <div class="ds-type-body">Body text for descriptions and longer content passages that require comfortable readability.</div>
+              <div class="ds-type-caption">CAPTION · LABEL · TAG</div>
+            </div>
+          </div>
+          <div class="ds-type-card">
+            <div class="ds-type-label">In-app type / Mono</div>
+            <div style="display:flex;flex-direction:column;gap:8px">
+              <div style="font-size:32px;font-weight:300;color:var(--fg)">18<span style="font-size:14px;color:var(--light)">min</span></div>
+              <div style="font-size:20px;font-weight:300;color:var(--fg)">9:41 AM</div>
+              <div class="ds-type-mono">--token-primary: #6B4EFF</div>
+              <div class="ds-type-mono">--spacing-md: 16px</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Components -->
+      <div style="margin-bottom:40px">
+        <div style="font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--light);margin-bottom:20px">Component Library</div>
+        <div class="ds-comp-grid">
+          <div class="ds-comp">
+            <div class="ds-comp-label">Buttons</div>
+            <div class="ds-btn-row">
+              <div class="dsb primary">Start focus session</div>
+              <div class="dsb secondary">View insights</div>
+              <div class="dsb ghost">Skip for now</div>
+              <div class="dsb danger">Cancel session</div>
+            </div>
+          </div>
+          <div class="ds-comp">
+            <div class="ds-comp-label">Cards</div>
+            <div class="ds-card-demo">
+              <h5>Deep Work · Block 1</h5>
+              <p>65% complete · 18 min remaining</p>
+            </div>
+            <div class="ds-card-demo" style="border-left:3px solid var(--accent)">
+              <h5>Today's mood: Calm 😌</h5>
+              <p>Logged at 9:41 AM · Energy: High</p>
+            </div>
+            <div class="ds-card-demo" style="background:var(--soft)">
+              <h5>Session with Sara</h5>
+              <p>Today · 3:00 PM · 50 minutes</p>
+            </div>
+          </div>
+          <div class="ds-comp">
+            <div class="ds-comp-label">Form Inputs</div>
+            <div class="ds-input-demo">
+              <span class="ds-input-label">How are you feeling?</span>
+              <input class="ds-input" placeholder="Describe your current state…" />
+            </div>
+            <div class="ds-input-demo">
+              <span class="ds-input-label">Session note</span>
+              <input class="ds-input" value="Feeling focused today" />
+            </div>
+            <div class="ds-input-demo">
+              <span class="ds-input-label">Email (error state)</span>
+              <input class="ds-input error" value="invalid@" />
+            </div>
+          </div>
+          <div class="ds-comp">
+            <div class="ds-comp-label">Icon Set</div>
+            <div class="ds-icon-grid">
+              <div class="ds-icon">🎯</div>
+              <div class="ds-icon">🧠</div>
+              <div class="ds-icon">😌</div>
+              <div class="ds-icon">🔥</div>
+              <div class="ds-icon">📊</div>
+              <div class="ds-icon">🎵</div>
+              <div class="ds-icon">⏱️</div>
+              <div class="ds-icon">👥</div>
+              <div class="ds-icon">💬</div>
+              <div class="ds-icon">⚡</div>
+            </div>
+          </div>
+          <div class="ds-comp">
+            <div class="ds-comp-label">Motion Tokens</div>
+            <div class="ds-motion-row">
+              <div class="ds-token"><span class="ds-token-name">--ease-calm</span><span class="ds-token-val">cubic-bezier(0.4, 0, 0.2, 1) · 300ms</span></div>
+              <div class="ds-token"><span class="ds-token-name">--ease-snap</span><span class="ds-token-val">cubic-bezier(0.0, 0, 0.2, 1) · 180ms</span></div>
+              <div class="ds-token"><span class="ds-token-name">--ease-spring</span><span class="ds-token-val">cubic-bezier(0.34, 1.56, 0.64, 1) · 400ms</span></div>
+              <div class="ds-token"><span class="ds-token-name">--fade-in</span><span class="ds-token-val">opacity 0→1 · 240ms · delay 80ms</span></div>
+            </div>
+          </div>
+          <div class="ds-comp">
+            <div class="ds-comp-label">Spacing Scale</div>
+            <div class="ds-spacing-row">
+              <div class="ds-sp"><span class="ds-sp-label">--sp-xs</span><div class="ds-sp-block" style="width:4px"></div><span class="ds-sp-val">4px</span></div>
+              <div class="ds-sp"><span class="ds-sp-label">--sp-sm</span><div class="ds-sp-block" style="width:8px"></div><span class="ds-sp-val">8px</span></div>
+              <div class="ds-sp"><span class="ds-sp-label">--sp-md</span><div class="ds-sp-block" style="width:16px"></div><span class="ds-sp-val">16px</span></div>
+              <div class="ds-sp"><span class="ds-sp-label">--sp-lg</span><div class="ds-sp-block" style="width:24px"></div><span class="ds-sp-val">24px</span></div>
+              <div class="ds-sp"><span class="ds-sp-label">--sp-xl</span><div class="ds-sp-block" style="width:40px"></div><span class="ds-sp-val">40px</span></div>
+              <div class="ds-sp"><span class="ds-sp-label">--sp-2xl</span><div class="ds-sp-block" style="width:64px"></div><span class="ds-sp-val">64px</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ SCREENS ══ -->
+<section id="screens">
+  <div class="wrap-wide">
+    <div class="wrap" style="padding-bottom:0">
+      <span class="snum">05</span>
+      <div class="tag"><span></span>Final Screens</div>
+      <h2>Seven screens, <em>one coherent</em> product</h2>
+      <p class="lead">High-fidelity UI across all primary user journeys. Scroll to explore each screen.</p>
+    </div>
+
+    <div class="screens-dark" style="margin:32px 32px 0">
+      <div class="sd-header">
+        <div class="sd-title">Complete screen set</div>
+        <div class="sd-sub">Scroll horizontally to view all 7 screens · Each designed to reduce cognitive load and surface the right action at the right moment</div>
+      </div>
+
+      <div class="screen-scroll">
+
+        <!-- Onboarding 1 -->
+        <div class="sc-item">
+          <div class="sc-phone w190">
+            <div class="sc-notch"></div>
+            <div class="sc-screen">
+              <div class="ob1">
+                <div class="ob1-logo"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg></div>
+                <div class="ob1-title">Focus on YOU —<br>a new kind of calm</div>
+                <div class="ob1-sub">Manage your focus, track your mood, and connect with support — all in one place.</div>
+                <div style="flex:1;min-height:20px"></div>
+                <div class="ob1-dots"><div class="ob1-dot a"></div><div class="ob1-dot"></div><div class="ob1-dot"></div><div class="ob1-dot"></div></div>
+                <div class="ob1-cta">Get started →</div>
+                <div class="ob1-skip">Already have an account? Sign in</div>
+              </div>
+            </div>
+          </div>
+          <div class="sc-label">Onboarding · Welcome</div>
+        </div>
+
+        <!-- Onboarding 2: Goals -->
+        <div class="sc-item">
+          <div class="sc-phone w190">
+            <div class="sc-notch"></div>
+            <div class="sc-screen">
+              <div class="ob2">
+                <div class="ob2-dots"><div class="ob2-d a"></div><div class="ob2-d a"></div><div class="ob2-d"></div><div class="ob2-d"></div></div>
+                <div class="ob2-title">What are your goals?</div>
+                <div class="ob2-sub">Select all that apply</div>
+                <div class="ob2-goals">
+                  <div class="ob2-goal sel"><div class="ob2-goal-check"></div><div class="ob2-goal-text">Improve my focus and concentration</div></div>
+                  <div class="ob2-goal sel"><div class="ob2-goal-check"></div><div class="ob2-goal-text">Manage anxiety and stress better</div></div>
+                  <div class="ob2-goal"><div class="ob2-goal-check"></div><div class="ob2-goal-text">Build healthier daily routines</div></div>
+                  <div class="ob2-goal"><div class="ob2-goal-check"></div><div class="ob2-goal-text">Connect with a therapist or coach</div></div>
+                  <div class="ob2-goal"><div class="ob2-goal-check"></div><div class="ob2-goal-text">Track my mood over time</div></div>
+                </div>
+                <div class="ob2-cta">Continue →</div>
+              </div>
+            </div>
+          </div>
+          <div class="sc-label">Onboarding · Goals</div>
+        </div>
+
+        <!-- Home -->
+        <div class="sc-item">
+          <div class="sc-phone w200">
+            <div class="sc-notch"></div>
+            <div class="sc-screen">
+              <div class="sh">
+                <div class="sh-t">9:41 AM · WEDNESDAY</div>
+                <div class="sh-g">Good morning, Zareen 👋</div>
+                <div class="sh-card">
+                  <div class="sh-cl">Today's session</div>
+                  <div class="sh-ct">Deep Work · Block 1 of 3</div>
+                  <div class="sh-p"><div class="sh-pf"></div></div>
+                </div>
+                <div class="sh-moods">
+                  <div class="sh-m a">😌</div><div class="sh-m">😤</div>
+                  <div class="sh-m">😴</div><div class="sh-m">🔥</div>
+                </div>
+                <div class="sh-ses">
+                  <div class="sh-st">1-on-1 · Sara<br><span style="font-size:8px;color:rgba(255,255,255,0.25)">Book Now ↗</span></div>
+                  <div class="sh-sn">3<span style="font-size:9px;color:rgba(255,150,150,0.5)">pm</span></div>
+                </div>
+                <div class="sh-streak">
+                  <div class="sh-day d">M</div><div class="sh-day d">T</div><div class="sh-day d">W</div>
+                  <div class="sh-day t">T</div><div class="sh-day">F</div><div class="sh-day">S</div><div class="sh-day">S</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="sc-label">Home Dashboard</div>
+        </div>
+
+        <!-- Focus timer -->
+        <div class="sc-item">
+          <div class="sc-phone w190">
+            <div class="sc-notch"></div>
+            <div class="sc-screen">
+              <div class="sf">
+                <div class="sf-l">Focus · Deep Work</div>
+                <div class="sf-ring">
+                  <div class="sf-inner">
+                    <div class="sf-num">18</div>
+                    <div class="sf-unit">MIN LEFT</div>
+                  </div>
+                </div>
+                <div class="sf-sn">Block 2 of 3 · Morning session</div>
+                <div class="sf-ctrl">
+                  <div class="sf-b"><svg viewBox="0 0 20 20"><rect x="4" y="4" width="4" height="12"/><rect x="12" y="4" width="4" height="12"/></svg></div>
+                  <div class="sf-b pl"><svg viewBox="0 0 20 20"><polygon points="6,4 16,10 6,16"/></svg></div>
+                  <div class="sf-b"><svg viewBox="0 0 20 20"><path d="M4 4l12 12M16 4L4 16" stroke="rgba(255,255,255,0.45)" stroke-width="2" fill="none"/></svg></div>
+                </div>
+                <div class="sf-ts"><div class="sf-tag">🎵 Ambient</div><div class="sf-tag">🔕 DND</div><div class="sf-tag">📊 Tracking</div></div>
+                <div class="sf-blocks">
+                  <div class="sf-bl done"></div><div class="sf-bl done"></div><div class="sf-bl"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="sc-label">Focus Timer</div>
+        </div>
+
+        <!-- Mood check-in -->
+        <div class="sc-item">
+          <div class="sc-phone w200">
+            <div class="sc-notch"></div>
+            <div class="sc-screen">
+              <div class="sm">
+                <div class="sm-t">How are you feeling?</div>
+                <div class="sm-s">Just take a moment. No right answers.</div>
+                <div class="sm-grid">
+                  <div class="sm-btn"><span class="sm-emoji">😌</span><div class="sm-word">Calm</div></div>
+                  <div class="sm-btn sel"><span class="sm-emoji">🔥</span><div class="sm-word">Focused</div></div>
+                  <div class="sm-btn"><span class="sm-emoji">😰</span><div class="sm-word">Anxious</div></div>
+                  <div class="sm-btn"><span class="sm-emoji">😴</span><div class="sm-word">Tired</div></div>
+                  <div class="sm-btn"><span class="sm-emoji">😤</span><div class="sm-word">Stressed</div></div>
+                  <div class="sm-btn"><span class="sm-emoji">🙂</span><div class="sm-word">Good</div></div>
+                </div>
+                <div class="sm-note">Add a note (optional)…</div>
+                <div class="sm-energy">
+                  <div class="sm-e-l">Energy level</div>
+                  <div class="sm-slider"><div class="sm-sl-fill"></div><div class="sm-sl-thumb"></div></div>
+                </div>
+                <div class="sm-cta">Save check-in →</div>
+              </div>
+            </div>
+          </div>
+          <div class="sc-label">Mood Check-in</div>
+        </div>
+
+        <!-- Insights -->
+        <div class="sc-item">
+          <div class="sc-phone w190">
+            <div class="sc-notch"></div>
+            <div class="sc-screen">
+              <div class="si">
+                <div class="si-t">Your week 📊</div>
+                <div class="si-week">
+                  <div class="si-bar-wrap"><div class="si-bar" style="height:28px"></div><div class="si-bar-d">M</div></div>
+                  <div class="si-bar-wrap"><div class="si-bar" style="height:40px"></div><div class="si-bar-d">T</div></div>
+                  <div class="si-bar-wrap"><div class="si-bar high" style="height:56px"></div><div class="si-bar-d">W</div></div>
+                  <div class="si-bar-wrap"><div class="si-bar" style="height:22px"></div><div class="si-bar-d">T</div></div>
+                  <div class="si-bar-wrap"><div class="si-bar" style="height:44px"></div><div class="si-bar-d">F</div></div>
+                  <div class="si-bar-wrap"><div class="si-bar" style="height:18px"></div><div class="si-bar-d">S</div></div>
+                  <div class="si-bar-wrap"><div class="si-bar" style="height:32px"></div><div class="si-bar-d">S</div></div>
+                </div>
+                <div class="si-mood-trend">
+                  <div class="si-mt-l">Mood trend</div>
+                  <div class="si-mt-row">
+                    <span class="si-mt-emoji">😰</span>
+                    <div class="si-mt-line">
+                      <div class="si-mt-dot" style="left:15%"></div>
+                      <div class="si-mt-dot" style="left:35%;background:var(--accent2)"></div>
+                      <div class="si-mt-dot" style="left:60%;background:var(--accent3)"></div>
+                      <div class="si-mt-dot" style="left:80%"></div>
+                    </div>
+                    <span class="si-mt-emoji">😌</span>
+                  </div>
+                </div>
+                <div class="si-insight-c">
+                  <div class="si-ic-l">💡 Insight</div>
+                  <div class="si-ic-t">You focus best on Wednesdays. Consider scheduling deep work then.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="sc-label">Weekly Insights</div>
+        </div>
+
+        <!-- Sessions -->
+        <div class="sc-item">
+          <div class="sc-phone w200">
+            <div class="sc-notch"></div>
+            <div class="sc-screen">
+              <div class="ss">
+                <div class="ss-t">Find support 👥</div>
+                <div class="ss-filter">
+                  <div class="ss-f a">All</div>
+                  <div class="ss-f">Therapists</div>
+                  <div class="ss-f">Coaches</div>
+                </div>
+                <div class="ss-coach">
+                  <div class="ss-av">👩‍⚕️</div>
+                  <div><div class="ss-name">Sara Müller</div><div class="ss-role">Anxiety · CBT · Berlin</div></div>
+                  <div class="ss-book">Book</div>
+                </div>
+                <div class="ss-coach">
+                  <div class="ss-av">👨‍💼</div>
+                  <div><div class="ss-name">James Park</div><div class="ss-role">Focus · ADHD · Remote</div></div>
+                  <div class="ss-book">Book</div>
+                </div>
+                <div class="ss-coach">
+                  <div class="ss-av">👩‍🏫</div>
+                  <div><div class="ss-name">Leila Hassan</div><div class="ss-role">Burnout · Mindfulness</div></div>
+                  <div class="ss-book">Book</div>
+                </div>
+                <div style="background:rgba(107,78,255,0.1);border-radius:9px;padding:9px 10px;margin-top:6px">
+                  <div style="font-size:9px;color:rgba(255,255,255,0.3);margin-bottom:2px">UPCOMING</div>
+                  <div style="font-size:11px;color:#fff">Sara · Today 3:00 PM</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="sc-label">Book a Session</div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ INTERACTIVE PROTOTYPE ══ -->
+<section>
+  <div class="wrap">
+    <div class="tag pink"><span></span>Interactive States</div>
+    <h2>Designing for <em>every state</em> — not just the happy path</h2>
+    <p class="lead">Click each state below to see how the focus timer screen responds to different contexts — from first launch to mid-session interruptions.</p>
+
+    <div class="proto-section">
+      <div class="proto-grid">
+        <div class="proto-phone-wrap">
+          <div class="proto-phone">
+            <div class="h-notch" style="width:44px;height:6px;background:#0D0A1A;border-radius:3px;margin:0 auto 10px"></div>
+            <div class="proto-screen-area">
+              <div class="proto-tabs">
+                <div class="ptab active" onclick="switchState(0,this)">Active</div>
+                <div class="ptab" onclick="switchState(1,this)">Break</div>
+                <div class="ptab" onclick="switchState(2,this)">Done</div>
+              </div>
+
+              <!-- State 0: Active session -->
+              <div class="proto-panel active" id="state-0">
+                <div style="text-align:center;padding:8px 0">
+                  <div style="font-size:8px;letter-spacing:0.12em;text-transform:uppercase;color:rgba(255,255,255,0.28);margin-bottom:14px">DEEP WORK · ACTIVE</div>
+                  <div style="width:110px;height:110px;border-radius:50%;background:conic-gradient(#6B4EFF 0% 72%, rgba(107,78,255,0.1) 72% 100%);margin:0 auto 12px;display:flex;align-items:center;justify-content:center;position:relative">
+                    <div style="width:94px;height:94px;border-radius:50%;background:#160F2E;position:absolute;display:flex;flex-direction:column;align-items:center;justify-content:center">
+                      <div style="font-size:26px;font-weight:300;color:#fff;line-height:1">18</div>
+                      <div style="font-size:7px;color:rgba(255,255,255,0.25);letter-spacing:0.08em">MIN LEFT</div>
+                    </div>
+                  </div>
+                  <div style="font-size:10px;color:rgba(255,255,255,0.38);margin-bottom:14px">Block 2 of 3 · Morning</div>
+                  <div style="display:flex;justify-content:center;gap:10px;margin-bottom:12px">
+                    <div style="width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,0.05);display:flex;align-items:center;justify-content:center"><svg width="12" height="12" viewBox="0 0 20 20" fill="rgba(255,255,255,0.4)"><rect x="4" y="4" width="4" height="12"/><rect x="12" y="4" width="4" height="12"/></svg></div>
+                    <div style="width:40px;height:40px;border-radius:50%;background:#6B4EFF;display:flex;align-items:center;justify-content:center"><svg width="14" height="14" viewBox="0 0 20 20" fill="#fff"><polygon points="6,4 16,10 6,16"/></svg></div>
+                    <div style="width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,0.05);display:flex;align-items:center;justify-content:center"><svg width="12" height="12" viewBox="0 0 20 20" fill="none" stroke="rgba(255,255,255,0.4)" stroke-width="2"><path d="M4 4l12 12M16 4L4 16"/></svg></div>
+                  </div>
+                  <div style="display:flex;justify-content:center;gap:4px"><div style="background:rgba(107,78,255,0.12);border-radius:100px;padding:2px 8px;font-size:8px;color:rgba(107,78,255,0.7)">🎵 Ambient</div><div style="background:rgba(107,78,255,0.12);border-radius:100px;padding:2px 8px;font-size:8px;color:rgba(107,78,255,0.7)">🔕 DND</div></div>
+                </div>
+              </div>
+
+              <!-- State 1: Break -->
+              <div class="proto-panel" id="state-1">
+                <div style="text-align:center;padding:8px 0">
+                  <div style="font-size:8px;letter-spacing:0.12em;text-transform:uppercase;color:rgba(46,196,182,0.7);margin-bottom:14px">BREAK TIME · 5 MIN</div>
+                  <div style="width:110px;height:110px;border-radius:50%;background:conic-gradient(#2EC4B6 0% 40%, rgba(46,196,182,0.1) 40% 100%);margin:0 auto 12px;display:flex;align-items:center;justify-content:center;position:relative">
+                    <div style="width:94px;height:94px;border-radius:50%;background:#160F2E;position:absolute;display:flex;flex-direction:column;align-items:center;justify-content:center">
+                      <div style="font-size:26px;font-weight:300;color:#fff;line-height:1">3</div>
+                      <div style="font-size:7px;color:rgba(255,255,255,0.25);letter-spacing:0.08em">MIN LEFT</div>
+                    </div>
+                  </div>
+                  <div style="font-size:13px;color:rgba(255,255,255,0.7);margin-bottom:6px">Take a breath 🌿</div>
+                  <div style="font-size:10px;color:rgba(255,255,255,0.3);margin-bottom:16px;line-height:1.5">Step away from the screen.<br>You're doing great.</div>
+                  <div style="background:rgba(46,196,182,0.1);border:1px solid rgba(46,196,182,0.2);border-radius:10px;padding:12px;margin-bottom:10px">
+                    <div style="font-size:9px;color:rgba(46,196,182,0.6);margin-bottom:4px;text-transform:uppercase;letter-spacing:0.06em">Breathing exercise</div>
+                    <div style="font-size:11px;color:rgba(255,255,255,0.55);line-height:1.5">Inhale 4s · Hold 4s · Exhale 6s</div>
+                  </div>
+                  <div style="background:#2EC4B6;border-radius:10px;padding:10px;font-size:11px;font-weight:500;color:#fff">Skip break → Resume now</div>
+                </div>
+              </div>
+
+              <!-- State 2: Session complete -->
+              <div class="proto-panel" id="state-2">
+                <div style="text-align:center;padding:12px 0">
+                  <div style="font-size:32px;margin-bottom:8px">🎉</div>
+                  <div style="font-size:16px;color:#fff;font-weight:500;margin-bottom:4px">Session complete!</div>
+                  <div style="font-size:10px;color:rgba(255,255,255,0.3);margin-bottom:20px">Deep Work · 3 blocks · 75 min</div>
+                  <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px">
+                    <div style="background:rgba(107,78,255,0.15);border-radius:10px;padding:12px">
+                      <div style="font-size:20px;color:#fff;font-weight:300">75</div>
+                      <div style="font-size:8px;color:rgba(255,255,255,0.3)">MINUTES FOCUSED</div>
+                    </div>
+                    <div style="background:rgba(46,196,182,0.12);border-radius:10px;padding:12px">
+                      <div style="font-size:20px;color:#fff;font-weight:300">7🔥</div>
+                      <div style="font-size:8px;color:rgba(255,255,255,0.3)">DAY STREAK</div>
+                    </div>
+                  </div>
+                  <div style="background:rgba(255,255,255,0.04);border-radius:10px;padding:10px;margin-bottom:10px;text-align:left">
+                    <div style="font-size:9px;color:rgba(255,255,255,0.28);margin-bottom:4px">HOW DID IT FEEL?</div>
+                    <div style="display:flex;gap:6px">
+                      <div style="font-size:18px">😌</div><div style="font-size:18px">🔥</div><div style="font-size:18px">😤</div><div style="font-size:18px">😴</div>
+                    </div>
+                  </div>
+                  <div style="background:#6B4EFF;border-radius:10px;padding:10px;font-size:11px;font-weight:500;color:#fff">Log reflection → Done</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="proto-info">
+          <h3>Component state design</h3>
+          <p>Each screen was designed for every state — not just the default. Click a state to preview how the focus timer adapts to different moments in the user journey.</p>
+          <div class="proto-state-list">
+            <div class="proto-state active" onclick="switchState(0,null,this)" id="pstate-0">
+              <div class="ps-dot"></div>
+              <div class="ps-text"><h5>Active session</h5><p>Timer running, DND enabled, primary CTA is pause — all ambient status visible.</p></div>
+            </div>
+            <div class="proto-state" onclick="switchState(1,null,this)" id="pstate-1">
+              <div class="ps-dot"></div>
+              <div class="ps-text"><h5>Break state</h5><p>Colour shifts from purple to teal — signalling mode change. Breathing prompt surfaced proactively.</p></div>
+            </div>
+            <div class="proto-state" onclick="switchState(2,null,this)" id="pstate-2">
+              <div class="ps-dot"></div>
+              <div class="ps-text"><h5>Session complete</h5><p>Celebratory moment, streak shown, mood check-in triggered naturally — no navigation required.</p></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ INSIGHTS ══ -->
+<section>
+  <div class="wrap">
+    <div class="tag"><span></span>Key Insights</div>
+    <h2>What the research <em>revealed</em></h2>
+    <div class="insight-row">
+      <div class="ip"><div class="ip-n">01</div><div class="ip-b"><h4>Productivity and mental health are inseparable — the product shouldn't make users choose</h4><p>Every interview surfaced the same tension: wanting to perform while struggling to feel okay. A product that treats these as separate domains will always feel incomplete.</p><span class="ip-tag">Core product principle</span></div></div>
+      <div class="ip"><div class="ip-n">02</div><div class="ip-b"><h4>Tone is a design system decision — clinical language actively increases anxiety</h4><p>Users consistently responded better to warm, conversational language over diagnostic framing. "How are you feeling today?" outperforms "Log your emotional state."</p><span class="ip-tag">Copywriting · Voice & Tone</span></div></div>
+      <div class="ip"><div class="ip-n">03</div><div class="ip-b"><h4>The blank slate is a UX failure — especially for overwhelmed users</h4><p>Citing "not knowing where to begin" as a bigger barrier than lack of motivation. Onboarding and session initiation must be frictionless and immediately rewarding.</p><span class="ip-tag">Onboarding · Session UX</span></div></div>
+      <div class="ip"><div class="ip-n">04</div><div class="ip-b"><h4>Streaks work — but only when they don't punish absence</h4><p>Gamification that penalises missed days actively damages the relationship with the app. Progress mechanics must be honest, forgiving, and encouraging — not coercive.</p><span class="ip-tag">Engagement · Habit design</span></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ REFLECTION ══ -->
+<section>
+  <div class="wrap">
+    <div class="tag pink"><span></span>Reflection</div>
+    <h2>What this project <em>taught</em> me</h2>
+    <p class="lead">Designing for mental health demands a different kind of care — for ethics, tone, and the unintended consequences of every design decision.</p>
+    <div class="ref-grid">
+      <div class="ref-c l">
+        <h3>What I learned</h3>
+        <ul class="ref-list">
+          <li>Tone is a design system decision — every word carries emotional weight in mental health contexts</li>
+          <li>State design matters as much as happy-path design — break and completion states shape retention</li>
+          <li>Wireframes exposed layout problems that hi-fi would have buried under visual noise</li>
+          <li>Personas built from real interviews are fundamentally different from assumed archetypes</li>
+          <li>Design tokens create consistency not just visually but in the emotional rhythm of the product</li>
+        </ul>
+      </div>
+      <div class="ref-c d">
+        <h3>What I'd explore next</h3>
+        <ul class="ref-list">
+          <li>Full accessibility audit — colour contrast, dynamic type, screen reader support</li>
+          <li>Longitudinal testing — does the app actually reduce anxiety over 4+ weeks?</li>
+          <li>Coach-side interface — the therapist experience is currently underdesigned</li>
+          <li>Wearable integration — mood data from Apple Watch to reduce manual check-in friction</li>
+          <li>Dark/light mode system — theming tokens already structured for this extension</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-name">Akshaya Prasannakumar</div>
+    <p>UX/UI Designer · Berlin, Germany</p>
+    <div class="foot-links">
+      <a href="/cdn-cgi/l/email-protection#335258405b524a5243445c415873545e525a5f1d505c5e"><span class="__cf_email__" data-cfemail="86e7edf5eee7ffe7f6f1e9f4edc6e1ebe7efeaa8e5e9eb">[email&#160;protected]</span></a>
+      <a href="https://akshayaprasannakumar.framer.website">Portfolio</a>
+      <a href="#">+49 155 10846835</a>
+    </div>
+  </div>
+</footer>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+function switchState(idx, tabEl, stateEl) {
+  // Update panels
+  document.querySelectorAll('.proto-panel').forEach((p,i) => {
+    p.classList.toggle('active', i === idx);
+  });
+  // Update tabs
+  if (tabEl) {
+    document.querySelectorAll('.ptab').forEach(t => t.classList.remove('active'));
+    tabEl.classList.add('active');
+  }
+  // Update state list
+  if (stateEl) {
+    document.querySelectorAll('.proto-state').forEach(s => s.classList.remove('active'));
+    stateEl.classList.add('active'
